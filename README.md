@@ -37,44 +37,11 @@ optional arguments:
 
 -------
 
-## Citing Metaome Stats
-
-If you are publishing results obtained using RustyOmeStats please cite:
-
-## CONTACT
-
--------
-The informatics point-of-contact for this pro# Metaome Stats: Calculating denovo assembly statistics from metaomes 
-
 ================================================
 
 ## Installing
 
 
-Main options:
-
-```bash
-usage: RustyOmeStats -i INTERVAL -f FASTA [-r REF] [-s SIZE] [-h]
-
-required arguments:
-  -i INTERVAL, --interval INTERVAL
-                        interval size in # of residues
-  -f FASTA, --fasta FASTA
-                        fasta file or folder
-
-optional arguments:
-  -r REF, --ref REF     reference genome
-  -s SIZE, --size SIZE  reference genome size
-  -h, --help
-```
-
--------
-
-## Input formats
-
-- FASTA files without quality scores (.fasta, .fa, .fna, .ffn format)
-
--------
 
 ## Citing RustyOmeStats
 
