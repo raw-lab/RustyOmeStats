@@ -8,14 +8,14 @@
 
 ## Usage examples
 
-```bash
-countAssembly.py -i 100 --fasta ecoli_Miseq_Assembly.fa
+```
+RustyOmeStats -i 100 --fasta ecoli_Miseq_Assembly.fa
 ```
 
 Main options:
 
 ```bash
-usage: countAssembly.py -i INTERVAL -f FASTA [-r REF] [-s SIZE] [-h]
+usage: RustyOmeStats  -i INTERVAL -f FASTA [-r REF] [-s SIZE] [-h]
 
 required arguments:
   -i INTERVAL, --interval INTERVAL
@@ -39,7 +39,7 @@ optional arguments:
 
 ## Citing Metaome Stats
 
-If you are publishing results obtained using Metaome Stats, please cite:
+If you are publishing results obtained using RustyOmeStats please cite:
 
 ## CONTACT
 
@@ -50,27 +50,6 @@ The informatics point-of-contact for this pro# Metaome Stats: Calculating denovo
 
 ## Installing
 
-- pip installation <br /> 
-`pip install MetaomeStats`
-
-- conda installation <br /> 
-`conda install -c bioconda MetaomeStats`
-
-- source (github)
-
-```bash
-git clone https://github.com/raw-lab/metaome_stats
-cd metaome_stats
-python setup.py
-```
-
--------
-
-## Usage examples
-
-```bash
-countAssembly.py -i 100 --fasta ecoli_Miseq_Assembly.fa
-```
 
 Main options:
 
@@ -97,20 +76,16 @@ optional arguments:
 
 -------
 
-## Citing Metaome Stats
+## Citing RustyOmeStats
 
-If you are publishing results obtained using Metaome Stats, please cite:
+If you are publishing results obtained using RustyOmeStats, please cite:
 
 ## CONTACT
 
 -------
 The informatics point-of-contact for this project is [Dr. Richard Allen White III](https://github.com/raw-lab).  </br>
 If you have any questions or feedback, please feel free to get in touch by email.  </br>
-Dr. Richard Allen White III: [mailto](mailto:rwhit101@uncc.edu) </br>
-Jose Figueroa: [mailto](mailto:jlfiguer@uncc.edu) </br>
-Or [open an issue](https://github.com/raw-lab/metaome_stats/issues). </br>
-ject is [Dr. Richard Allen White III](https://github.com/raw-lab).  </br>
-If you have any questions or feedback, please feel free to get in touch by email.  </br>
-Dr. Richard Allen White III: [mailto](mailto:rwhit101@uncc.edu) </br>
-Jose Figueroa: [mailto](mailto:jlfiguer@uncc.edu) </br>
-Or [open an issue](https://github.com/raw-lab/metaome_stats/issues). </br>
+[Dr. Richard Allen White III:](mailto:rwhit101@uncc.edu) </ br>
+[Andrew Redinbo:](mailto:aredinbo@charlotte.edu) </ br>
+[Jose Figueroa:](mailto:jlfiguer@uncc.edu) </br>
+Or [open an issue](https://github.com/raw-lab/rustyomestats/issues). </br>
