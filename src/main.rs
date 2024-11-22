@@ -1,7 +1,5 @@
-use bio::{alignment::pairwise::Aligner, io::fasta};
-use bitvec::prelude as bv;
+use bio::io::fasta;
 use clap::Parser;
-use regex::Regex;
 use std::{collections::HashMap, error::Error, fs, path::PathBuf};
 
 #[derive(Parser, Debug)]
@@ -18,32 +16,6 @@ struct Args {
     /// Reference genome
     #[arg(short, long)]
     reference: Option<PathBuf>,
-}
-
-struct MaskArray {
-    data: bv::BitVec,
-}
-
-impl MaskArray {
-    fn new(size: usize) -> Self {
-        MaskArray {
-            data: bv::bitvec![0; size],
-        }
-    }
-
-    fn apply_mask(&mut self, start: usize, stop: usize) {
-        for i in start..stop {
-            self.data.set(i, true);
-        }
-    }
-
-    fn to_string(&self) -> String {
-        /* self.data
-        .iter()
-        .map(|b| if *b { '1' } else { '0' })
-        .collect() */
-        self.data.to_string()
-    }
 }
 
 fn validate_input_dir(fasta: PathBuf) -> Vec<PathBuf> {
@@ -95,7 +67,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     let num_seq = all_records.len();
 
     if args.reference.is_some() {
-        println!("arrived ref block");
         let reference_genome = fasta::Reader::from_file(args.reference.unwrap())?;
         let reference_sequences: Vec<fasta::Record> =
             reference_genome.records().map(|r| r.unwrap()).collect();
@@ -104,28 +75,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             .map(|seq| String::from_utf8(seq.seq().to_owned()).unwrap_or_default())
             .collect::<Vec<String>>()
             .join("");
-        let reference = reference_string.as_bytes();
-        let reference_length = reference.len();
-
-        let score = |a: u8, b: u8| if a == b { 1 } else { -1 };
-        let mut aligner = Aligner::new(-5, -1, score);
-        // let mut unique_alignments: HashMap<String, Vec<fasta::Record>> = HashMap::new();
-        println!("before mask array");
-        let mut mask_array: MaskArray = MaskArray::new(reference_length);
-        println!("after mask array");
-
-        for record in &all_records {
-            let alignment = aligner.local(&reference, record.seq());
-            println!("got here");
-            mask_array.apply_mask(alignment.ystart, alignment.yend);
-        }
-
-        let re = Regex::new(r"0+").unwrap();
-        let mask_array_string = mask_array.to_string();
-        let splits = re.split(&mask_array_string);
-        for split in splits {
-            println!("\"{}\"", split);
-        }
+        let _reference = reference_string.as_bytes();
+        todo!() // switch reference_sequences to the same format as all_records
     }
 
     for record in all_records {
