@@ -1,11 +1,12 @@
 # Rustyomestats - calculating denovo assembly statistics for genomes, metagenomes etc.
 
-Fast genome statistics in Rust. Two subcommands:
+Fast genome statistics in Rust. 
 
-* **`genome`** — from a FASTA (single genome or folder of assemblies): length,
+Two subcommands:
+* **`genomes or metagenomes`** — from a FASTA (single genomes, transcriptomes, metagenomes, metatranscriptomes or folder of assemblies): length,
   GC, N/L stats, 6-frame codon density, and FragGeneScan-predicted codon
   density. All tabular output is written as polars DataFrames.
-* **`u50`** — Castro et al. (2016) assembly metrics from a reference FASTA +
+* **`U50`** — Modern assembly metrics from a reference FASTA +
   sorted BED of mapped contigs: **N50, L50, NG50, LG50, U50, UL50, UG50,
   ULG50, UG50%**, plus gap and overlap intervals.
 
@@ -126,7 +127,7 @@ rustyomestats genome -f my_genome.fna --interval 500
 
 ---
 
-## `u50` subcommand — Castro et al. (2016) assembly metrics
+## `U50` subcommand — Modern assembly metrics (Castro et al. 2017)
 
 ### Definitions
 
@@ -219,7 +220,7 @@ UG50% = 20.00 %
 
 These values are covered by unit tests in `src/u50.rs`.
 
-### `u50` flags
+### `U50` flags
 
 | flag | default | notes |
 |---|---|---|
@@ -307,48 +308,28 @@ println!("UG50 = {} ({:.2} %)", res.ug50, res.ug50_pct);
 ```bash
 cargo test
 ```
-
 Covers the N50 definition, greedy masking, hand-checked U50 toy case, BED
 deduplication, reverse-complement, 6-frame codon indexing, and more.
 
-## Notes on differences from the original scripts
+## 📄 License
 
-* **U50 algorithm** — faithful to Castro et al. 2016 (greedy mask, longest
-  contig first, contigs reduced to zero unique bp drop out of the U-family
-  computations). Two adjustments: (1) BED deduplication now drops only exact
-  `(start, stop)` duplicates; the original Python dropped any contig sharing
-  a single boundary with an earlier one, which silently removed valid data.
-  (2) Integer arithmetic for the N50 cutoff avoids the rounding ambiguity
-  in the original `round(length * 0.5)` call.
-* **Extra metrics** — adds N50/L50/NG50/LG50 alongside U50/UL50/UG50/ULG50
-  and UG50%. The original Castro script reported only U50-family metrics.
-* **Gap / overlap output** — written as intervals (start, end, length), not
-  per-position, which is far more compact on real-world references. Overlap
-  intervals also report `max_depth`.
-* **polars everywhere** — all tabular outputs are DataFrames → CSV.
-* **Plots decoupled** — Rust writes data; `scripts/plot_stats.py` reads it
-  with polars and renders with seaborn. Re-plot without re-running compute.
-* **N50 bug in original `rustyomestats`** — fixed: the original stored
-  cumulative length into `n50`; the correct value is the length of the contig
-  at which the cumulative sum first crosses the 50 % threshold. Unit-tested.
+Creative Commons Attribution-NonCommercial (CC BY-NC 4.0) — See LICENSE file
 
-## References
-
-Castro, C.J. & Ng, T.F.F. (2017). U50: A New Metric for Measuring Assembly
-Output Based on Non-Overlapping, Target-Specific Contigs. *Journal of
-Computational Biology*, 24(11), 1071-1080.
-
-
-## Citing RustyOmeStats
+## Citations 
 
 If you are publishing results obtained using RustyOmeStats, please cite:
 
-## CONTACT
 
--------
-The informatics point-of-contact for this project is [Dr. Richard Allen White III](https://github.com/raw-lab).  </br>
-If you have any questions or feedback, please feel free to get in touch by email.  </br>
-[Dr. Richard Allen White III:](mailto:rwhit101@uncc.edu) </ br>
-[Andrew Redinbo:](mailto:aredinbo@charlotte.edu) </ br>
-[Jose Figueroa:](mailto:jlfiguer@uncc.edu) </br>
-Or [open an issue](https://github.com/raw-lab/rustyomestats/issues). </br>
+## Contributing to Rustyomestats
+
+We welcome contributions of other experts expanding features in Rustyomestat. Please contact us via support. 
+
+---
+
+## 📞 Support 
+
+- **Issues:** [open an issue](https://github.com/raw-lab/rustyomestats/issues). </br>
+- **Email:** [Dr. Richard Allen White III](mailto:rwhit101@uncc.edu)
+- If you have any questions or feedback, please feel free to get in touch by email.  </br>
+---
+
