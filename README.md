@@ -12,8 +12,6 @@
 ![Polars](https://img.shields.io/badge/powered%20by-polars-purple)
 ![Bioinformatics](https://img.shields.io/badge/domain-bioinformatics-green)
 
-<img src="https://raw.githubusercontent.com/rust-lang/rust-artwork/master/logo/rust-logo-512x512.png" width="120">
-
 ### ⚡ Modern Assembly Metrics • 📊 Interactive Reports • 🧬 Codon Analytics • 🚀 Parallelized Rust
 
 </div>
