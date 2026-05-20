@@ -316,7 +316,7 @@ rustyomestats genome \
 
 RustyOmeStats implements the modern metrics proposed in:
 
-> Castro et al. 2017
+> [Castro et al. 2017](https://journals.sagepub.com/doi/abs/10.1089/cmb.2017.0013). Castro CJ, Ng TFF. U50: A New Metric for Measuring Assembly Output Based on Non-Overlapping, Target-Specific Contigs. J Comput Biol. 2017 24(11):1071-1080.
 
 Including:
 
@@ -459,7 +459,7 @@ Pull requests and issues are encouraged.
 # 📞 Support
 
 * 🐛 GitHub Issues:
- - **Issues:** [RustyOmeStats Issues](https://github.com/raw937/rustyomestats/issues?utm_source=chatgpt.com)
+  - **Issues:** [RustyOmeStats Issues](https://github.com/raw937/rustyomestats/issues)
 
 * 📧 Contact:
   - **Email:** [Dr. Richard Allen White III](mailto:rwhit101@uncc.edu)
