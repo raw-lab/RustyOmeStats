@@ -1,0 +1,41 @@
+[package]
+name         = "rustyomestats"
+version      = "0.2.0"
+edition      = "2021"
+rust-version = "1.85"
+authors      = ["Richard Allen White III <raw937@gmail.com>"]
+license      = "MIT"
+description  = "Fast genome statistics: length, GC, N/L, 6-frame and FragGeneScan codon density, plus Castro U50 assembly metrics."
+homepage     = "https://github.com/raw937/rustyomestats"
+repository   = "https://github.com/raw937/rustyomestats"
+documentation = "https://docs.rs/rustyomestats"
+readme       = "README.md"
+keywords     = ["bioinformatics", "genomics", "assembly", "codon", "u50"]
+categories   = ["science::bioinformatics::genomics", "command-line-utilities"]
+include      = [
+    "src/**/*.rs",
+    "scripts/plot_stats.py",
+    "Cargo.toml",
+    "README.md",
+    "LICENSE",
+]
+
+[lib]
+name = "rustyomestats"
+path = "src/lib.rs"
+
+[[bin]]
+name = "rustyomestats"
+path = "src/main.rs"
+
+[dependencies]
+clap   = { version = "4.5",  features = ["derive"] }
+bio    = "2.0"
+polars = { version = "0.46", features = ["lazy", "csv"] }
+rayon  = "1.10"
+anyhow = "1.0"
+
+[profile.release]
+opt-level     = 3
+lto           = "thin"
+codegen-units = 1
