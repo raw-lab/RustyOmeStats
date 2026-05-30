@@ -34,6 +34,11 @@ bio    = "2.0"
 polars = { version = "0.46", features = ["lazy", "csv"] }
 rayon  = "1.10"
 anyhow = "1.0"
+base64 = "0.22"
+plotters = { version = "0.3", features = ["full_palette", "bitmap_backend"] }
+serde = { version = "1", features = ["derive"] }
+csv = "1"
+chrono = "0.4"
 
 [profile.release]
 opt-level     = 3
