@@ -377,8 +377,8 @@ pub fn plot_codon_usage_bar(outdir: &Path) -> Option<PathBuf> {
             "Codon density: 6-frame vs FragGeneScan",
             ("sans-serif", 22),
         )
-        .margin(20)
-        .x_label_area_size(70)
+        .margin(10)
+        .x_label_area_size(90)
         .y_label_area_size(60)
         .build_cartesian_2d(0f64..(n as f64 * 2.2), 0f64..y_max)
         .ok()?;
@@ -386,6 +386,7 @@ pub fn plot_codon_usage_bar(outdir: &Path) -> Option<PathBuf> {
     chart
         .configure_mesh()
         .disable_x_mesh()
+        .x_labels(0)
         .x_desc("codon")
         .y_desc("density (fraction)")
 		.max_light_lines(0)
@@ -415,6 +416,88 @@ pub fn plot_codon_usage_bar(outdir: &Path) -> Option<PathBuf> {
                 .ok()?;
         }
     }
+    // Draw codon labels
+    let label_y = -y_max * 0.05;
+    let label_style = ("sans-serif", 12)
+        .into_font()
+        .transform(FontTransform::Rotate90)
+        .color(&BLACK);
+
+    for (i, codon) in codons.iter().enumerate() {
+        let x_base = i as f64 * 2.2;
+
+        // Center of the pair of bars
+        let x_center = x_base + bar_w;
+
+        chart
+            .draw_series(std::iter::once(Text::new(
+                codon.clone(),
+                (x_center, label_y),
+                label_style.clone(),
+            )))
+            .ok()?;
+    }
+
+
+    // Draw legend
+    let legend_x = n as f64 * 2.2 * 0.78;
+    let legend_y = y_max * 0.98;
+    let legend_w = 25.0;
+    let legend_h = y_max * 0.12;
+    let box_w = 0.8;
+    let box_h = y_max * 0.03;
+    chart
+        .draw_series(std::iter::once(Rectangle::new(
+            [
+                (legend_x, legend_y - legend_h),
+                (legend_x + legend_w, legend_y),
+            ],
+            WHITE.filled(),
+        )))
+        .ok()?;
+    chart
+        .draw_series(std::iter::once(Rectangle::new(
+            [
+                (legend_x, legend_y - legend_h),
+                (legend_x + legend_w, legend_y),
+            ],
+            BLACK.stroke_width(1),
+        )))
+        .ok()?;
+    chart
+        .draw_series(std::iter::once(Rectangle::new(
+            [
+                (legend_x+1.0, legend_y - box_h),
+                (legend_x+1.0 + box_w, legend_y),
+            ],
+            NAVY.mix(0.8).filled(),
+        )))
+        .ok()?;
+
+    chart
+        .draw_series(std::iter::once(Text::new(
+            "6-frame background",
+            (legend_x + 2.0, legend_y - box_h / 2.0),
+            ("sans-serif", 14).into_font(),
+        )))
+        .ok()?;
+    chart
+        .draw_series(std::iter::once(Rectangle::new(
+            [
+                (legend_x+1.0, legend_y - box_h * 2.5),
+                (legend_x+1.0 + box_w, legend_y - box_h * 1.5),
+            ],
+            GREEN.mix(0.8).filled(),
+        )))
+        .ok()?;
+
+    chart
+        .draw_series(std::iter::once(Text::new(
+            "FragGeneScan ORFs",
+            (legend_x + 2.0, legend_y - box_h * 2.0),
+            ("sans-serif", 14).into_font(),
+        )))
+        .ok()?;
 
     root.present().ok()?;
     Some(out.clone())
