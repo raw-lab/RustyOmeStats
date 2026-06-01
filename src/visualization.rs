@@ -229,6 +229,7 @@ pub fn plot_gc_distribution(outdir: &Path) -> Option<PathBuf> {
         .configure_mesh()
         .x_desc("GC %")
         .y_desc("count")
+		.max_light_lines(0)
         .draw()
         .ok()?;
 
@@ -282,6 +283,7 @@ pub fn plot_gc_vs_length(outdir: &Path) -> Option<PathBuf> {
         .configure_mesh()
         .x_desc("length (bp)")
         .y_desc("GC %")
+		.max_light_lines(0)
         .draw()
         .ok()?;
 
@@ -358,6 +360,7 @@ pub fn plot_codon_usage_bar(outdir: &Path) -> Option<PathBuf> {
         .disable_x_mesh()
         .x_desc("codon")
         .y_desc("density (fraction)")
+		.max_light_lines(0)
         .draw()
         .ok()?;
 
@@ -529,6 +532,7 @@ pub fn plot_codon_enrichment(outdir: &Path) -> Option<PathBuf> {
         .configure_mesh()
         .disable_x_mesh()
         .y_desc("enrichment")
+		.max_light_lines(0)
         .draw()
         .ok()?;
 
@@ -772,6 +776,7 @@ pub fn plot_u50_coverage(outdir: &Path, bins: usize) -> Option<PathBuf> {
         .configure_mesh()
         .x_desc(format!("reference position (bins of {bin_size} bp)"))
         .y_desc("fraction covered")
+		.max_light_lines(0)
         .draw()
         .ok()?;
 
