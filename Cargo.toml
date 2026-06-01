@@ -2,12 +2,12 @@
 name         = "rustyomestats"
 version      = "0.2.0"
 edition      = "2021"
-rust-version = "1.85"
-authors      = ["Richard Allen White III <raw937@gmail.com>"]
-license      = "MIT"
+rust-version = "1.88"
+authors      = ["Richard Allen White III <rwhit101@charlotte.edu>"]
+license      = "CC BY-NC 4.0"
 description  = "Fast genome statistics: length, GC, N/L, 6-frame and FragGeneScan codon density, plus Castro U50 assembly metrics."
-homepage     = "https://github.com/raw937/rustyomestats"
-repository   = "https://github.com/raw937/rustyomestats"
+homepage     = "https://github.com/raw-lab/rustyomestats"
+repository   = "https://github.com/raw-lab/rustyomestats"
 documentation = "https://docs.rs/rustyomestats"
 readme       = "README.md"
 keywords     = ["bioinformatics", "genomics", "assembly", "codon", "u50"]
@@ -18,6 +18,10 @@ include      = [
     "Cargo.toml",
     "README.md",
     "LICENSE",
+]
+exclude = [
+    "target/*",
+    ".github/*",
 ]
 
 [lib]
