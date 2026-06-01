@@ -292,6 +292,9 @@ pub fn plot_gc_vs_length(outdir: &Path) -> Option<PathBuf> {
     let gc_min = rows.iter().map(|r| r.gc).fold(f64::INFINITY, f64::min);
     let gc_max = rows.iter().map(|r| r.gc).fold(f64::NEG_INFINITY, f64::max);
 
+    let x_min = len_min / 1.2;
+    let x_max = len_max * 1.2;
+
     let out = save_path(outdir, "plot_gc_vs_length");
     let root = BitMapBackend::new(&out, (W_STD, H_STD)).into_drawing_area();
     root.fill(&WHITE).ok()?;
@@ -302,7 +305,7 @@ pub fn plot_gc_vs_length(outdir: &Path) -> Option<PathBuf> {
         .x_label_area_size(50)
         .y_label_area_size(60)
         .build_cartesian_2d(
-            (len_min..len_max).log_scale(),
+            (x_min..x_max).log_scale(),
             (gc_min - 1.0)..(gc_max + 1.0),
         )
         .ok()?;
@@ -311,6 +314,9 @@ pub fn plot_gc_vs_length(outdir: &Path) -> Option<PathBuf> {
         .configure_mesh()
         .x_desc("length (bp)")
         .y_desc("GC %")
+        .x_label_formatter(&|v| {
+            let exp = v.log10().round() as i32;
+            format!("10{}", superscript(exp))})
 		.max_light_lines(0)
         .draw()
         .ok()?;
