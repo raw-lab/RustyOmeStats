@@ -539,7 +539,7 @@ pub fn plot_codon_enrichment(outdir: &Path) -> Option<PathBuf> {
     chart
         .configure_mesh()
         .disable_x_mesh()
-        .disable_y_mesh()
+        .max_light_lines(0)
         .x_labels(0)
         .y_desc("enrichment")
         .x_desc("codons")
