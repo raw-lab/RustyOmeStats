@@ -145,6 +145,30 @@ fn save_path(outdir: &Path, name: &str) -> PathBuf {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
+// superscript helper
+// ══════════════════════════════════════════════════════════════════════════════
+
+fn superscript(n: i32) -> String {
+    n.to_string()
+        .chars()
+        .map(|c| match c {
+            '0' => '⁰',
+            '1' => '¹',
+            '2' => '²',
+            '3' => '³',
+            '4' => '⁴',
+            '5' => '⁵',
+            '6' => '⁶',
+            '7' => '⁷',
+            '8' => '⁸',
+            '9' => '⁹',
+            '-' => '⁻',
+            _ => c,
+        })
+        .collect()
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
 // per-sequence plots
 // ══════════════════════════════════════════════════════════════════════════════
 
@@ -178,8 +202,12 @@ pub fn plot_length_hist(outdir: &Path) -> Option<PathBuf> {
 
     chart
         .configure_mesh()
+        .max_light_lines(0)
         .x_desc("length (bp, log10)")
         .y_desc("# sequences")
+        .x_label_formatter(&|v| {
+            let exp = v.log10().round() as i32;
+            format!("10{}", superscript(exp))})
         .draw()
         .ok()?;
 
@@ -436,8 +464,9 @@ pub fn plot_codon_heatmap_by_frame(outdir: &Path) -> Option<PathBuf> {
     let out = save_path(outdir, "plot_codon_heatmap_by_frame");
     let root = BitMapBackend::new(&out, (W_WIDE, 500)).into_drawing_area();
     root.fill(&WHITE).ok()?;
+    let (heatmap_area, legend_area) = root.split_horizontally(W_WIDE as i32 - 90);
 
-    let mut chart = ChartBuilder::on(&root)
+    let mut chart = ChartBuilder::on(&heatmap_area)
         .caption("6-frame codon density heatmap", ("sans-serif", 22))
         .margin(20)
         .x_label_area_size(80)
@@ -455,9 +484,12 @@ pub fn plot_codon_heatmap_by_frame(outdir: &Path) -> Option<PathBuf> {
         .y_label_formatter(&|v| {
             FRAME_ORDER.get(*v).map(|s| s.to_string()).unwrap_or_default()
         })
+        .x_desc("codon")
+        .y_desc("frame")
         .draw()
         .ok()?;
 
+    // draw heatmap
     for fi in 0..n_frames {
         for ci in 0..n_codons {
             let v = matrix[fi][ci];
@@ -479,6 +511,51 @@ pub fn plot_codon_heatmap_by_frame(outdir: &Path) -> Option<PathBuf> {
                 .ok()?;
         }
     }
+
+    // draw legend
+    let (_lw, lh) = legend_area.dim_in_pixel();
+    let title_y = 15;
+    let bar_top = 35;          // below title
+    let bar_bottom = lh as i32 - 20; // leave padding at bottom
+    let bar_left = 10;
+    let bar_right = 30;
+
+    let bar_height = bar_bottom - bar_top;
+    for y in bar_top..bar_bottom {
+        let intensity =
+            1.0 - ((y - bar_top) as f64 / bar_height as f64);
+
+        let r = (intensity * 253.0) as u8;
+        let g = ((0.5 - (intensity - 0.5).abs()) * 2.0 * 231.0) as u8;
+        let b = ((1.0 - intensity) * 220.0) as u8;
+
+        legend_area.draw(&Rectangle::new(
+            [(bar_left, y), (bar_right, y + 1)],
+            RGBColor(r, g, b).filled(),
+        )).ok()?;
+    }
+    for i in 0..=4 {
+        let frac = i as f64 / 4.0;
+
+        let y = bar_bottom
+            - ((bar_height as f64 * frac) as i32);
+
+        legend_area.draw(&Text::new(
+            format!("{:.4}", frac * max_density),
+            (bar_right + 8, y),
+            ("sans-serif", 10).into_font(),
+        )).ok()?;
+    }
+    legend_area.draw(&Text::new(
+        "0",
+        (35, lh as i32 - 5),
+        ("sans-serif", 12).into_font(),
+    )).ok()?;
+    legend_area.draw(&Text::new(
+        "Density",
+        (bar_left, title_y),
+        ("sans-serif", 14).into_font(),
+    )).ok()?;
 
     root.present().ok()?;
     Some(out.clone())
@@ -524,7 +601,7 @@ pub fn plot_codon_enrichment(outdir: &Path) -> Option<PathBuf> {
             "Codon enrichment (predicted / absolute)",
             ("sans-serif", 22),
         )
-        .margin(20)
+        .margin(10)
         .x_label_area_size(90)
         .y_label_area_size(60)
         .build_cartesian_2d(0f64..n as f64, y_min..y_max)
@@ -545,7 +622,7 @@ pub fn plot_codon_enrichment(outdir: &Path) -> Option<PathBuf> {
         .x_desc("codons")
         .draw()
         .ok()?;
- 
+
     // reference line at y = 1.0
     chart
         .draw_series(LineSeries::new(
@@ -553,11 +630,11 @@ pub fn plot_codon_enrichment(outdir: &Path) -> Option<PathBuf> {
             BLACK.stroke_width(1),
         ))
         .ok()?;
- 
+
     for (i, row) in rows.iter().enumerate() {
         let x0 = i as f64 + gap;
         let x1 = x0 + bar_w;
- 
+
         // bar
         chart
             .draw_series(std::iter::once(Rectangle::new(
