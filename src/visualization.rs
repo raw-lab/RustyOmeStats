@@ -64,7 +64,7 @@ struct CodonAggRow {
 
 #[derive(Debug, Deserialize)]
 struct CodonCompRow {
-    //codon: String,
+    codon: String,
     enrichment_pred_over_abs: f64,
 }
 
@@ -517,39 +517,66 @@ pub fn plot_codon_enrichment(outdir: &Path) -> Option<PathBuf> {
     let root = BitMapBackend::new(&out, (W_WIDE, H_STD)).into_drawing_area();
     root.fill(&WHITE).ok()?;
 
+    // Use an integer x-axis (one slot per codon) so we can map each index
+    // back to its codon name via x_label_formatter.
     let mut chart = ChartBuilder::on(&root)
         .caption(
             "Codon enrichment (predicted / absolute)",
             ("sans-serif", 22),
         )
         .margin(20)
-        .x_label_area_size(70)
+        .x_label_area_size(90)
         .y_label_area_size(60)
-        .build_cartesian_2d(0f64..(n as f64 * 1.1), y_min..y_max)
+        .build_cartesian_2d(0f64..n as f64, y_min..y_max)
         .ok()?;
 
+    // Bar geometry: each slot is 1.0 wide; bar fills 0.8, gap is 0.2.
+    let bar_w = 0.8f64;
+    let gap = (1.0 - bar_w) / 2.0; // 0.1 padding on each side
+
+    // Suppress all x-axis tick labels from the mesh — we draw them manually
+    // below so every codon is guaranteed to appear without skipping.
     chart
         .configure_mesh()
         .disable_x_mesh()
+        .disable_y_mesh()
+        .x_labels(0)
         .y_desc("enrichment")
-		.max_light_lines(0)
+        .x_desc("codons")
         .draw()
         .ok()?;
-
+ 
     // reference line at y = 1.0
     chart
         .draw_series(LineSeries::new(
-            [(0f64, 1.0), (n as f64 * 1.1, 1.0)],
+            [(0f64, 1.0), (n as f64, 1.0)],
             BLACK.stroke_width(1),
         ))
         .ok()?;
-
+ 
     for (i, row) in rows.iter().enumerate() {
-        let x = i as f64;
+        let x0 = i as f64 + gap;
+        let x1 = x0 + bar_w;
+ 
+        // bar
         chart
             .draw_series(std::iter::once(Rectangle::new(
-                [(x, 0f64), (x + 0.8, row.enrichment_pred_over_abs)],
+                [(x0, 0f64), (x1, row.enrichment_pred_over_abs)],
                 FIREBRICK.mix(0.8).filled(),
+            )))
+            .ok()?;
+
+        // codon label — drawn slightly below y_min so it clears the axis line
+        let label_y = y_min - (y_max - y_min) * 0.03;
+        let label_style = ("sans-serif", 12)
+            .into_font()
+            .transform(FontTransform::Rotate90)
+            .color(&BLACK);
+        chart
+            .draw_series(std::iter::once(Text::new(
+                row.codon.clone(),
+                (i as f64 + 0.5, label_y),
+                label_style,
             )))
             .ok()?;
     }
