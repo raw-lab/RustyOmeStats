@@ -19,10 +19,6 @@ include      = [
     "README.md",
     "LICENSE",
 ]
-exclude = [
-    "target/*",
-    ".github/*",
-]
 
 [lib]
 name = "rustyomestats"
