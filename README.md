@@ -7,7 +7,7 @@
 ![Rust](https://img.shields.io/badge/Rust-1.85%2B-black?logo=rust)
 ![Crates.io](https://img.shields.io/crates/v/rustyomestats?logo=rust)
 ![License](https://img.shields.io/badge/license-CC_BY--NC_4.0-blue)
-![Build](https://img.shields.io/github/actions/workflow/status/raw937/rustyomestats/rust.yml?branch=main)
+![Build](https://img.shields.io/github/actions/workflow/status/raw-lab/rustyomestats/rust.yml?branch=main)
 ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macOS%20%7C%20windows-success)
 ![Polars](https://img.shields.io/badge/powered%20by-polars-purple)
 ![Bioinformatics](https://img.shields.io/badge/domain-bioinformatics-green)
@@ -156,7 +156,7 @@ cargo install rustyomestats
 ### From source
 
 ```bash
-git clone https://github.com/raw937/rustyomestats
+git clone https://github.com/raw-lab/rustyomestats
 cd rustyomestats
 
 cargo install --path .
@@ -462,7 +462,7 @@ Pull requests and issues are encouraged.
   - **Issues:** [RustyOmeStats Issues](https://github.com/raw-lab/rustyomestats/issues)
 
 * 📧 Contact:
-  - **Email:** [Dr. Richard Allen White III](mailto:rwhit101@uncc.edu)
+  - **Email:** [Dr. Richard Allen White III](mailto:rwhit101@charlotte.edu)
   - If you have any questions or feedback, please feel free to get in touch by email.  </br>
 
 ---
