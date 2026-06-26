@@ -1,0 +1,32 @@
+name: Experimental
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cross-platform:
+    name: Build (${{ matrix.os }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libfontconfig1-dev
+
+      - name: Run tests
+        run: cargo test
+
+      - name: Build
+        run: cargo build --release
