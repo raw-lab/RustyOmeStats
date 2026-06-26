@@ -1,6 +1,6 @@
 [package]
 name         = "rustyomestats"
-version      = "0.2.0"
+version      = "0.2.1"
 edition      = "2021"
 rust-version = "1.88"
 authors      = ["Richard Allen White III <rwhit101@charlotte.edu>"]
