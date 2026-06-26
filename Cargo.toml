@@ -13,11 +13,11 @@ readme       = "README.md"
 keywords     = ["bioinformatics", "genomics", "assembly", "codon", "u50"]
 categories   = ["science::bioinformatics::genomics", "command-line-utilities"]
 include      = [
-    "src/**/*.rs",
-    "scripts/plot_stats.py",
-    "Cargo.toml",
-    "README.md",
-    "LICENSE",
+    "/src/**/*.rs",
+    "/scripts/plot_stats.py",
+    "/Cargo.toml",
+    "/README.md",
+    "/LICENSE",
 ]
 
 [lib]
