@@ -1,3 +1,4 @@
 target
 bioconda
 rustyomestats_out*
+tests/output*
